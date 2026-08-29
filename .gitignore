@@ -1,0 +1,22 @@
+# Agent / editor tooling
+.omni/
+.claude/
+.github/
+.cursor/
+.kiro/
+.agents/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Local environment / credentials
+.env
+.env.*
+
+# OS
+.DS_Store

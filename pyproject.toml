@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentcore-graph"
+version = "0.1.0"
+description = "Read-only single-pane-of-glass access graph for Amazon Bedrock AgentCore agents"
+readme = "README.md"
+license = "MIT-0"
+requires-python = ">=3.11"
+dependencies = [
+    "boto3",
+]
+
+[project.optional-dependencies]
+# Web app (FastAPI + uvicorn); the CLI needs only the base deps above.
+web = [
+    "fastapi",
+    "uvicorn",
+]
+# Test tooling.
+dev = [
+    "pytest",
+]
+
+[project.scripts]
+agentcore-graph = "agentcore_graph.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+# Ship the no-build frontend (served by api.py) inside the package.
+agentcore_graph = ["web/*"]

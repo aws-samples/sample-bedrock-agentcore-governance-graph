@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgentCore Access Graph</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ff9900' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23ff9900'/%3E%3C/svg%3E" />
+<script src="/cytoscape.min.js"></script>
+<link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+<div id="scrim"></div>
+
+<header id="topbar">
+  <div class="brand">
+    <span class="glyph">◎</span>
+    <div>
+      <h1>ACCESS GRAPH</h1>
+      <p class="sub">agentcore · single pane of glass</p>
+    </div>
+  </div>
+  <div class="account" id="account">
+    <span class="dim">connecting…</span>
+  </div>
+  <div class="controls">
+    <input id="region" value="us-east-1" spellcheck="false" aria-label="region" />
+    <label id="observeToggle" title="Overlay Tier-C observed edges from runtime traces (may be slower)">
+      <input type="checkbox" id="observe" /> observe
+    </label>
+    <select id="observeWindow" disabled title="Observability lookback window — how far back to read runtime traces">
+      <option value="3600">last 1h</option>
+      <option value="21600">last 6h</option>
+      <option value="86400" selected>last 24h</option>
+      <option value="259200">last 3d</option>
+      <option value="604800">last 7d</option>
+      <option value="2592000">last 30d</option>
+    </select>
+    <button id="refresh" title="Rebuild graph from AWS (read-only)">↻ rebuild</button>
+  </div>
+</header>
+
+<main>
+  <aside id="rail">
+    <div class="rail-head">
+      <h2>AGENTS</h2>
+      <span id="agentCount" class="pill">—</span>
+    </div>
+    <input id="filter" placeholder="filter…" spellcheck="false" />
+    <ul id="agentList"></ul>
+    <div class="rail-foot">
+      <button id="showAll" class="ghost">show whole account</button>
+    </div>
+  </aside>
+
+  <section id="stage">
+    <div id="typeFilter" class="type-filter" hidden></div>
+    <div id="cy"></div>
+    <div id="legend">
+      <div class="legend-group">
+        <span class="lg-title">EDGE PROVENANCE</span>
+        <span class="lg-row"><i class="edge tierA"></i>A · static / authoritative</span>
+        <span class="lg-row"><i class="edge tierB"></i>B · inferred (env vars)</span>
+        <span class="lg-row"><i class="edge tierC"></i>C · observed (traces)</span>
+      </div>
+      <div class="legend-group">
+        <span class="lg-title">SHARING</span>
+        <span class="lg-row"><i class="node-badge">×N</i>reachable by N agents</span>
+      </div>
+    </div>
+    <div id="stageEmpty" class="stage-empty">
+      <p>Select an agent to trace its access chain,<br/>or show the whole account.</p>
+    </div>
+    <div id="loading" class="loading" hidden><span class="spin">◎</span> building graph…</div>
+  </section>
+
+  <aside id="drawer" class="closed">
+    <button id="drawerClose" aria-label="close">×</button>
+    <div id="drawerBody"></div>
+  </aside>
+</main>
+
+<footer id="findings" class="collapsed">
+  <button id="findingsToggle">
+    <span class="fchevron">▲</span> FINDINGS <span id="findingsCount" class="pill warn">0</span>
+  </button>
+  <div id="findingsList"></div>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
